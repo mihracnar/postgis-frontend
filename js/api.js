@@ -1,6 +1,6 @@
 // API Configuration
 const API_CONFIG = {
-    BASE_URL: 'https://13.60.90.28/api',  // HTTP → HTTPS
+    BASE_URL: 'http://13.60.90.28/api',  // HTTP → HTTPS
     TIMEOUT: 10000,
     RETRY_ATTEMPTS: 3,
     RETRY_DELAY: 1000
