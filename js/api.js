@@ -19,6 +19,14 @@ class PostGISAPI {
         axios.defaults.baseURL = this.baseURL;
     }
 
+    // Get points by category - bu fonksiyonu ekle
+    async getPointsByCategory(category) {
+    return this.retry(async () => {
+        const response = await axios.get(`/points/category/${encodeURIComponent(category)}`);
+        return response.data;
+    });
+    }
+
     // Retry wrapper for failed requests
     async retry(fn, attempts = this.retryAttempts) {
         try {
