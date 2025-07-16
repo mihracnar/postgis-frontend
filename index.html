@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostGIS Istanbul Explorer</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-map-marked-alt"></i> PostGIS Istanbul Explorer
+            </span>
+            <div class="navbar-nav d-flex flex-row">
+                <button class="btn btn-outline-light btn-sm me-2" onclick="showAllPoints()">
+                    <i class="fas fa-eye"></i> Show All
+                </button>
+                <button class="btn btn-outline-light btn-sm" onclick="clearMap()">
+                    <i class="fas fa-eraser"></i> Clear
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Map Container -->
+            <div class="col-lg-8 col-md-7">
+                <div id="map"></div>
+                <div id="map-controls" class="map-controls">
+                    <button class="btn btn-sm btn-primary" onclick="toggleLocationSearch()">
+                        <i class="fas fa-crosshairs"></i> Click to Search
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4 col-md-5">
+                <div class="sidebar">
+                    <!-- API Status -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-server"></i> API Status</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="api-status">
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    <span>Checking connection...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Statistics</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="stats-content">
+                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                Loading stats...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-tags"></i> Categories</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="categories-list">
+                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                Loading categories...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add New Point -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-plus"></i> Add New Point</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="add-point-form">
+                                <div class="mb-2">
+                                    <input type="text" class="form-control form-control-sm" 
+                                           id="point-name" placeholder="Point name" required>
+                                </div>
+                                <div class="mb-2">
+                                    <select class="form-select form-select-sm" id="point-category">
+                                        <option value="Other">Other</option>
+                                        <option value="Historic">Historic</option>
+                                        <option value="Religious">Religious</option>
+                                        <option value="Shopping">Shopping</option>
+                                        <option value="Landmark">Landmark</option>
+                                        <option value="Public">Public</option>
+                                        <option value="Restaurant">Restaurant</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <textarea class="form-control form-control-sm" 
+                                              id="point-description" placeholder="Description" rows="2"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="number" class="form-control form-control-sm" 
+                                               id="point-lat" placeholder="Latitude" step="any" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" class="form-control form-control-sm" 
+                                               id="point-lng" placeholder="Longitude" step="any" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm mt-2 w-100">
+                                    <i class="fas fa-plus"></i> Add Point
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Nearby Search -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-search-location"></i> Find Nearby</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <input type="number" class="form-control form-control-sm" 
+                                           id="search-lat" placeholder="Lat" step="any">
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control form-control-sm" 
+                                           id="search-lng" placeholder="Lng" step="any">
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control form-control-sm" 
+                                           id="search-radius" placeholder="Radius" value="1000">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <button onclick="searchNearby()" class="btn btn-secondary btn-sm w-100">
+                                        <i class="fas fa-search"></i> Search Nearby
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><i class="fas fa-list"></i> Points</h6>
+                            <small id="points-count" class="text-muted"></small>
+                        </div>
+                        <div class="card-body">
+                            <div id="points-list">
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    <span>Loading points...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
