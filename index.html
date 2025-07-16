@@ -22,11 +22,11 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
-                <i class="fas fa-map-marked-alt"></i> PostGIS Istanbul Explorer
+                <i class="fas fa-map-marked-alt"></i> PostGIS Explorer
             </span>
             <div class="navbar-nav d-flex flex-row">
-                <button class="btn btn-outline-light btn-sm me-2" onclick="showAllPoints()">
-                    <i class="fas fa-eye"></i> Show All
+                <button class="btn btn-outline-light btn-sm me-1" onclick="showAllPoints()">
+                    <i class="fas fa-eye"></i> All
                 </button>
                 <button class="btn btn-outline-light btn-sm" onclick="clearMap()">
                     <i class="fas fa-eraser"></i> Clear
@@ -41,11 +41,6 @@
             <!-- Map Container -->
             <div class="col-lg-8 col-md-7">
                 <div id="map"></div>
-                <div id="map-controls" class="map-controls">
-                    <button class="btn btn-sm btn-primary" onclick="toggleLocationSearch()">
-                        <i class="fas fa-crosshairs"></i> Click to Search
-                    </button>
-                </div>
             </div>
             
             <!-- Sidebar -->
@@ -142,18 +137,25 @@
                             <h6 class="mb-0"><i class="fas fa-search-location"></i> Find Nearby</h6>
                         </div>
                         <div class="card-body">
+                            <!-- Click to Search Button - Buraya taşı -->
+                            <div class="mb-3">
+                                <button class="btn btn-sm btn-primary w-100" onclick="toggleLocationSearch()">
+                                    <i class="fas fa-crosshairs"></i> Click to Search
+                                </button>
+                            </div>
+                            
                             <div class="row">
                                 <div class="col-4">
                                     <input type="number" class="form-control form-control-sm" 
-                                           id="search-lat" placeholder="Lat" step="any">
+                                        id="search-lat" placeholder="Lat" step="any">
                                 </div>
                                 <div class="col-4">
                                     <input type="number" class="form-control form-control-sm" 
-                                           id="search-lng" placeholder="Lng" step="any">
+                                        id="search-lng" placeholder="Lng" step="any">
                                 </div>
                                 <div class="col-4">
                                     <input type="number" class="form-control form-control-sm" 
-                                           id="search-radius" placeholder="Radius" value="1000">
+                                        id="search-radius" placeholder="Radius" value="1000">
                                 </div>
                             </div>
                             <div class="row mt-2">

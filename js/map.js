@@ -58,9 +58,13 @@ class MapManager {
             if (this.clickSearchEnabled) {
                 this.searchAtLocation(e.latlng.lat, e.latlng.lng);
             } else {
-                // Add coordinates to form when clicking
+                // Add coordinates to BOTH forms when clicking
                 document.getElementById('point-lat').value = e.latlng.lat.toFixed(6);
                 document.getElementById('point-lng').value = e.latlng.lng.toFixed(6);
+                
+                // YENI: Search form'una da ekle
+                document.getElementById('search-lat').value = e.latlng.lat.toFixed(6);
+                document.getElementById('search-lng').value = e.latlng.lng.toFixed(6);
             }
         });
     }
