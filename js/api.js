@@ -1,6 +1,8 @@
 // API Configuration
 const API_CONFIG = {
-    BASE_URL: 'http://13.60.90.28:3000/api',  // EC2 IP'in
+    BASE_URL: window.location.hostname === 'mihracnar.github.io' 
+        ? 'http://13.60.90.28:3000/api'  // GitHub Pages'ten HTTP'ye izin ver
+        : 'http://13.60.90.28:3000/api',
     TIMEOUT: 10000,
     RETRY_ATTEMPTS: 3,
     RETRY_DELAY: 1000
