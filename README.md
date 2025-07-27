@@ -19,13 +19,6 @@
 **Frontend**: https://mihracnar.github.io/postgis-frontend/  
 **API**: https://13.60.90.28/api/health
 
-### 📱 Screenshots
-
-<div align="center">
-<img src="https://via.placeholder.com/800x450/0066cc/white?text=Interactive+Map+View" alt="Main Interface" width="400"/>
-<img src="https://via.placeholder.com/800x450/28a745/white?text=Spatial+Search+Results" alt="Search Results" width="400"/>
-</div>
-
 > *Interactive map with 8 Istanbul landmarks, real-time spatial queries, and category filtering*
 
 ---
